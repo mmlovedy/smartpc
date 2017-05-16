@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smartpc.gathering.core.dao.ItemMapper" >
+  <resultMap id="BaseResultMap" type="com.smartpc.gathering.core.po.ItemPo" >
+    <result column="itemid" property="itemid" jdbcType="INTEGER" />
+    <result column="valuetype" property="valueType" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.smartpc.gathering.core.po.ItemPo" >
+    insert into T_GATHERING_ITEMS (itemid, valuetype, description
+      )
+    values (#{itemid,jdbcType=INTEGER}, #{valuetype,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <select id="queryItemsById" parameterType="int" resultType="com.smartpc.gathering.core.po.ItemPo">
+      SELECT itemid,valuetype,description FROM T_GATHERING_ITEMS WHERE itemid = #{itemid,jdbcType=INTEGER}
+  </select>
+
+  <select id="queryItemsWithPage" resultMap="BaseResultMap">
+
+  </select>
+
+  <select id="queryItemsAll" resultMap="BaseResultMap">
+      SELECT itemid,valuetype,description FROM T_GATHERING_ITEMS
+  </select>
+
+  <sql id="queryall">
+      SELECT itemid,valuetype,description FROM T_GATHERING_ITEMS
+  </sql>
+</mapper>

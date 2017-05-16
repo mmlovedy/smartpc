@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smartpc.gathering.core.dao.PermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.smartpc.gathering.core.po.user_role_permission.Permission" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="available" property="available" jdbcType="BIT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parentId" property="parentid" jdbcType="BIGINT" />
+    <result column="parentIds" property="parentids" jdbcType="VARCHAR" />
+    <result column="permission" property="permission" jdbcType="VARCHAR" />
+    <result column="resourceType" property="resourcetype" jdbcType="CHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, available, name, parentId, parentIds, permission, resourceType, url
+  </sql>
+  <sql id="permissionList" >
+    p.id, p.available, p.name, p.parentId, p.parentIds, p.permission, p.resourceType, p.url
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_SYS_PERMISSION
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from T_SYS_PERMISSION
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.smartpc.gathering.core.po.user_role_permission.Permission" >
+    insert into T_SYS_PERMISSION (id, available, name, 
+      parentId, parentIds, permission, 
+      resourceType, url)
+    values (#{id,jdbcType=BIGINT}, #{available,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, 
+      #{parentid,jdbcType=BIGINT}, #{parentids,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR}, 
+      #{resourcetype,jdbcType=CHAR}, #{url,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.smartpc.gathering.core.po.user_role_permission.Permission" >
+    insert into T_SYS_PERMISSION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="available != null" >
+        available,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="parentid != null" >
+        parentId,
+      </if>
+      <if test="parentids != null" >
+        parentIds,
+      </if>
+      <if test="permission != null" >
+        permission,
+      </if>
+      <if test="resourcetype != null" >
+        resourceType,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="available != null" >
+        #{available,jdbcType=BIT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=BIGINT},
+      </if>
+      <if test="parentids != null" >
+        #{parentids,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null" >
+        #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="resourcetype != null" >
+        #{resourcetype,jdbcType=CHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smartpc.gathering.core.po.user_role_permission.Permission" >
+    update T_SYS_PERMISSION
+    <set >
+      <if test="available != null" >
+        available = #{available,jdbcType=BIT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        parentId = #{parentid,jdbcType=BIGINT},
+      </if>
+      <if test="parentids != null" >
+        parentIds = #{parentids,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null" >
+        permission = #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="resourcetype != null" >
+        resourceType = #{resourcetype,jdbcType=CHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smartpc.gathering.core.po.user_role_permission.Permission" >
+    update T_SYS_PERMISSION
+    set available = #{available,jdbcType=BIT},
+      name = #{name,jdbcType=VARCHAR},
+      parentId = #{parentid,jdbcType=BIGINT},
+      parentIds = #{parentids,jdbcType=VARCHAR},
+      permission = #{permission,jdbcType=VARCHAR},
+      resourceType = #{resourcetype,jdbcType=CHAR},
+      url = #{url,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="queryByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="permissionList" />
+      FROM T_SYS_USER U
+      INNER JOIN T_SYS_USER_ROLE R ON U.id = R.uid
+      INNER JOIN T_SYS_ROLE_PERMISSION RP ON R.roleId = RP.roleId
+      INNER JOIN T_SYS_PERMISSION P P.id = RP.permissionid
+    WHERE U.id = #{userId,jdbcType=BIGINT}
+  </select>
+</mapper>
